@@ -4,8 +4,45 @@ import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { Upload } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+
+type Role = "student" | "recruiter";
+
+type FormInput = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  role: Role;
+  file: File | null;
+};
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const [input, setInput] = useState<FormInput>({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    role: "student",
+    file: null,
+  });
+
+  const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+  const changeFileHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const [file] = e.target.files ?? [];
+    setInput({ ...input, file: file ?? null });
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(input);
+  };
+
   return (
     <div className="min-h-screen bg-white text-black flex flex-col overflow-x-hidden">
       <Navbar />
@@ -15,10 +52,9 @@ const Signup = () => {
             <p className="text-xs uppercase tracking-[0.4em] text-black/50">
               Sign up
             </p>
-           
           </div>
 
-          <form className="mt-10 space-y-6">
+          <form onSubmit={handleSubmit} className="mt-10 space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <Label className="text-xs uppercase tracking-[0.2em] text-black/60">
@@ -26,6 +62,9 @@ const Signup = () => {
                 </Label>
                 <Input
                   type="text"
+                  value={input.fullName}
+                  name="fullName"
+                  onChange={changeEventHandler}
                   placeholder="Full name"
                   className="rounded-xl border-black/15 bg-[#f8f8f8] text-black placeholder:text-black/30 focus:border-black focus:ring-0"
                 />
@@ -37,6 +76,9 @@ const Signup = () => {
                 </Label>
                 <Input
                   type="email"
+                  value={input.email}
+                  name="email"
+                  onChange={changeEventHandler}
                   placeholder="you@example.com"
                   className="rounded-xl border-black/15 bg-[#f8f8f8] text-black placeholder:text-black/30 focus:border-black focus:ring-0"
                 />
@@ -48,6 +90,9 @@ const Signup = () => {
                 </Label>
                 <Input
                   type="tel"
+                  value={input.phoneNumber}
+                  name="phoneNumber"
+                  onChange={changeEventHandler}
                   placeholder="+91 00000 00000"
                   className="rounded-xl border-black/15 bg-[#f8f8f8] text-black placeholder:text-black/30 focus:border-black focus:ring-0"
                 />
@@ -59,6 +104,9 @@ const Signup = () => {
                 </Label>
                 <Input
                   type="password"
+                  value={input.password}
+                  name="password"
+                  onChange={changeEventHandler}
                   placeholder="••••••••"
                   className="rounded-xl border-black/15 bg-[#f8f8f8] text-black placeholder:text-black/30 focus:border-black focus:ring-0"
                 />
@@ -70,7 +118,10 @@ const Signup = () => {
                 Role
               </Label>
               <RadioGroup
-                defaultValue="student"
+                value={input.role}
+                onValueChange={(value) =>
+                  setInput((prev) => ({ ...prev, role: value as Role }))
+                }
                 className="flex flex-wrap gap-3"
               >
                 {[
@@ -126,19 +177,30 @@ const Signup = () => {
                 id="profile-upload"
                 accept="image/*"
                 type="file"
+                onChange={changeFileHandler}
+                name="file"
                 className="sr-only"
               />
+              {input.file && (
+                <p className="text-xs text-black/60">{input.file.name}</p>
+              )}
             </div>
 
-            <Button className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black">
+            <Button
+              type="submit"
+              className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black"
+            >
               Sign up
             </Button>
 
             <p className="text-center text-sm text-black/60">
               Already have an account?{" "}
-              <a href="/login" className="underline underline-offset-4">
+              <span
+                onClick={() => navigate("/login")}
+                className="underline underline-offset-4 cursor-pointer"
+              >
                 Log in
-              </a>
+              </span>
             </p>
           </form>
         </div>

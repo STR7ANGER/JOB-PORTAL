@@ -1,12 +1,37 @@
-
-
 import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
+import {  useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+
+type Role = "student" | "recruiter";
+
+type FormInput = {
+  email: string;
+  password: string;
+  role: Role;
+};
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const [input, setInput] = useState<FormInput>({
+    email: "",
+    password: "",
+    role: "student",
+  });
+
+  const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(input);
+  };
   return (
     <div className="min-h-screen bg-white text-black flex flex-col overflow-x-hidden">
       <Navbar />
@@ -18,13 +43,16 @@ const Login = () => {
             </p>
           </div>
 
-          <form className="mt-10 space-y-6">
+          <form onSubmit={handleSubmit} className="mt-10 space-y-6">
             <div className="space-y-2">
               <Label className="text-xs uppercase tracking-[0.2em] text-black/60">
                 Email
               </Label>
               <Input
                 type="email"
+                value={input.email}
+                name="email"
+                onChange={changeEventHandler}
                 placeholder="you@example.com"
                 className="rounded-xl border-black/15 bg-[#f8f8f8] text-black placeholder:text-black/30 focus:border-black focus:ring-0"
               />
@@ -36,6 +64,9 @@ const Login = () => {
               </Label>
               <Input
                 type="password"
+                value={input.password}
+                name="password"
+                onChange={changeEventHandler}
                 placeholder="••••••••"
                 className="rounded-xl border-black/15 bg-[#f8f8f8] text-black placeholder:text-black/30 focus:border-black focus:ring-0"
               />
@@ -46,7 +77,10 @@ const Login = () => {
                 Role
               </Label>
               <RadioGroup
-                defaultValue="student"
+                value={input.role}
+                onValueChange={(value) =>
+                  setInput((prev) => ({ ...prev, role: value as Role }))
+                }
                 className="flex flex-wrap gap-3"
               >
                 {[
@@ -82,15 +116,18 @@ const Login = () => {
               </RadioGroup>
             </div>
 
-            <Button className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black">
+            <Button type="submit" className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black">
               Log in
             </Button>
 
             <p className="text-center text-sm text-black/60">
               Don't have an account?{" "}
-              <a href="/signup" className="underline underline-offset-4">
+              <span
+                onClick={() => navigate("/signup")}
+                className="underline underline-offset-4 cursor-pointer"
+              >
                 Sign up
-              </a>
+              </span>
             </p>
           </form>
         </div>
