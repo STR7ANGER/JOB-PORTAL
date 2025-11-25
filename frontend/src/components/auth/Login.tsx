@@ -4,8 +4,11 @@ import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
-import {  useState } from "react";
+import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
+import { API_URL } from "../../utils/constant";
+import axios from "axios";
+import { toast } from "sonner";
 
 type Role = "student" | "recruiter";
 
@@ -28,10 +31,26 @@ const Login = () => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(input);
+    try {
+      const res = await axios.post(`${API_URL}/user/login`, input, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error in login:", error);
+      toast.error("Something went wrong");
+    }
   };
+
   return (
     <div className="min-h-screen bg-white text-black flex flex-col overflow-x-hidden">
       <Navbar />
@@ -116,7 +135,10 @@ const Login = () => {
               </RadioGroup>
             </div>
 
-            <Button type="submit" className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black">
+            <Button
+              type="submit"
+              className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black"
+            >
               Log in
             </Button>
 

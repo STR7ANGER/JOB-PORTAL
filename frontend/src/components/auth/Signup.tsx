@@ -7,11 +7,14 @@ import { Upload } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
+import { API_URL } from "../../utils/constant";
+import axios from "axios";
+import { toast } from "sonner";
 
 type Role = "student" | "recruiter";
 
 type FormInput = {
-  fullName: string;
+  fullname: string;
   email: string;
   phoneNumber: string;
   password: string;
@@ -22,7 +25,7 @@ type FormInput = {
 const Signup = () => {
   const navigate = useNavigate();
   const [input, setInput] = useState<FormInput>({
-    fullName: "",
+    fullname: "",
     email: "",
     phoneNumber: "",
     password: "",
@@ -38,15 +41,39 @@ const Signup = () => {
     setInput({ ...input, file: file ?? null });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(input);
+    const formData = new FormData();
+    formData.append("fullname", input.fullname);
+    formData.append("email", input.email);
+    formData.append("phoneNumber", input.phoneNumber);
+    formData.append("password", input.password);
+    formData.append("role", input.role);
+    if(input.file){
+      formData.append("file", input.file);
+    }
+    try {
+      const res = await axios.post(`${API_URL}/user/register`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Error in signup:", error);
+      toast.error("Something went wrong");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col overflow-x-hidden">
+    <div className="h-screen bg-white text-black flex flex-col ">
       <Navbar />
-      <div className="flex flex-1 items-center justify-center px-4 py-10 md:py-12">
+      <div className="flex flex-1 items-center justify-center px-4 py-10 md:py-12 ">
         <div className="w-full max-w-3xl rounded-3xl border border-black/10 bg-white px-8 py-10 shadow-xl md:shadow-2xl">
           <div className="space-y-3 text-center">
             <p className="text-xs uppercase tracking-[0.4em] text-black/50">
@@ -62,8 +89,8 @@ const Signup = () => {
                 </Label>
                 <Input
                   type="text"
-                  value={input.fullName}
-                  name="fullName"
+                  value={input.fullname}
+                  name="fullname"
                   onChange={changeEventHandler}
                   placeholder="Full name"
                   className="rounded-xl border-black/15 bg-[#f8f8f8] text-black placeholder:text-black/30 focus:border-black focus:ring-0"
