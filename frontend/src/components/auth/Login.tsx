@@ -9,6 +9,10 @@ import type { ChangeEvent, FormEvent } from "react";
 import { API_URL } from "../../utils/constant";
 import axios from "axios";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../store/authSlice";
+import type { RootState } from "../../store/store";
+import { Loader2 } from "lucide-react";
 
 type Role = "student" | "recruiter";
 
@@ -20,6 +24,8 @@ type FormInput = {
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state: RootState) => state.auth);
 
   const [input, setInput] = useState<FormInput>({
     email: "",
@@ -35,6 +41,7 @@ const Login = () => {
     e.preventDefault();
     console.log(input);
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${API_URL}/user/login`, input, {
         headers: {
           "Content-Type": "application/json",
@@ -48,6 +55,8 @@ const Login = () => {
     } catch (error) {
       console.error("Error in login:", error);
       toast.error("Something went wrong");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -134,14 +143,19 @@ const Login = () => {
                 ))}
               </RadioGroup>
             </div>
-
-            <Button
-              type="submit"
-              className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black"
-            >
-              Log in
-            </Button>
-
+            {loading ? (
+              <Button>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Please Wait...
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black"
+              >
+                Log in
+              </Button>
+            )}
             <p className="text-center text-sm text-black/60">
               Don't have an account?{" "}
               <span

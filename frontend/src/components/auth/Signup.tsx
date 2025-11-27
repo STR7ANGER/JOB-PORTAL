@@ -10,6 +10,10 @@ import type { ChangeEvent, FormEvent } from "react";
 import { API_URL } from "../../utils/constant";
 import axios from "axios";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../store/authSlice";
+import type { RootState } from "../../store/store";
+import { Loader2 } from "lucide-react";
 
 type Role = "student" | "recruiter";
 
@@ -24,6 +28,8 @@ type FormInput = {
 
 const Signup = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state: RootState) => state.auth);
   const [input, setInput] = useState<FormInput>({
     fullname: "",
     email: "",
@@ -50,7 +56,7 @@ const Signup = () => {
     formData.append("phoneNumber", input.phoneNumber);
     formData.append("password", input.password);
     formData.append("role", input.role);
-    if(input.file){
+    if (input.file) {
       formData.append("file", input.file);
     }
     try {
@@ -67,14 +73,16 @@ const Signup = () => {
     } catch (error) {
       console.error("Error in signup:", error);
       toast.error("Something went wrong");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
   return (
-    <div className="h-screen bg-white text-black flex flex-col ">
+    <div className="min-h-screen bg-white text-black flex flex-col overflow-x-hidden ">
       <Navbar />
-      <div className="flex flex-1 items-center justify-center px-4 py-10 md:py-12 ">
-        <div className="w-full max-w-3xl rounded-3xl border border-black/10 bg-white px-8 py-10 shadow-xl md:shadow-2xl">
+      <div className="flex flex-1  justify-center px-4 py-10 md:py-12 ">
+        <div className="w-full max-w-xl rounded-3xl border border-black/10 bg-white px-8 py-10 shadow-xl md:shadow-2xl">
           <div className="space-y-3 text-center">
             <p className="text-xs uppercase tracking-[0.4em] text-black/50">
               Sign up
@@ -185,41 +193,55 @@ const Signup = () => {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-xs uppercase tracking-[0.2em] text-black/60">
+              <Label
+                htmlFor="profile-upload"
+                className="text-xs uppercase tracking-[0.2em] text-black/60"
+              >
                 Profile picture
               </Label>
-              <label
-                htmlFor="profile-upload"
-                className="flex cursor-pointer items-center justify-between rounded-2xl border border-black/10 bg-[#fdfdfd] px-4 py-3 text-sm text-black/70 transition hover:border-black"
-              >
-                <span className="flex items-center gap-3">
+
+              <div className="flex items-center justify-between rounded-2xl border border-black/10 bg-[#fdfdfd] px-4 py-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    document.getElementById("profile-upload")?.click()
+                  }
+                  className="flex items-center gap-3 text-sm text-black/70"
+                >
                   <Upload className="h-4 w-4" />
                   Upload image
-                </span>
+                </button>
                 <span className="text-xs uppercase tracking-[0.3em] text-black/40">
                   JPG · PNG
                 </span>
-              </label>
+              </div>
+
               <Input
                 id="profile-upload"
                 accept="image/*"
                 type="file"
                 onChange={changeFileHandler}
                 name="file"
-                className="sr-only"
+                className="hidden"
               />
+
               {input.file && (
                 <p className="text-xs text-black/60">{input.file.name}</p>
               )}
             </div>
-
-            <Button
-              type="submit"
-              className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black"
-            >
-              Sign up
-            </Button>
-
+            {loading ? (
+              <Button>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Please Wait...
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                className="w-full rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black"
+              >
+                Sign up
+              </Button>
+            )}
             <p className="text-center text-sm text-black/60">
               Already have an account?{" "}
               <span
