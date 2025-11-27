@@ -176,7 +176,7 @@ const Signup = () => {
                   <label
                     key={option.value}
                     htmlFor={option.id}
-                    className="flex min-w-[13rem] flex-1 items-center justify-between rounded-2xl border border-black/10 bg-[#fdfdfd] px-4 py-3 text-sm text-black/80 transition hover:border-black"
+                    className="flex  flex-1 items-center justify-between rounded-2xl border border-black/10 bg-[#fdfdfd] px-4 py-3 text-sm text-black/80 transition hover:border-black"
                   >
                     <div className="space-y-0.5">
                       <p className="font-medium">{option.label}</p>
@@ -230,7 +230,7 @@ const Signup = () => {
               )}
             </div>
             {loading ? (
-              <Button>
+              <Button className="flex w-full items-center justify-center gap-2 rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black">
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Please Wait...
               </Button>

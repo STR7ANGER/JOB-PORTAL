@@ -8,9 +8,11 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { LogOutIcon, User2Icon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 const Navbar = () => {
   const navigate = useNavigate();
-  const user = false;
+  const { user } = useSelector((state: RootState) => state.auth);
   return (
     <header className="sticky top-0 z-30 w-full border-b border-black/10 bg-white/90 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
@@ -70,43 +72,53 @@ const Navbar = () => {
           ) : (
             <Popover>
               <PopoverTrigger asChild>
-                <Avatar className="h-9 w-9 cursor-pointer border border-black/10">
+                <Avatar className="h-9 w-9 cursor-pointer border border-black/10 transition hover:border-black/40">
                   <AvatarImage
                     src="https://github.com/shadcn.png"
-                    alt="@shadcn"
+                    alt="@user"
                   />
                 </Avatar>
               </PopoverTrigger>
-              <PopoverContent className="w-64 rounded-2xl border border-black/10 bg-white shadow-xl">
-                <div className="flex gap-3">
+              <PopoverContent className="w-72 rounded-2xl border border-black/10 bg-white p-4 shadow-xl">
+                <div className="flex items-center gap-3">
                   <Avatar className="h-9 w-9 border border-black/10">
                     <AvatarImage
                       src="https://github.com/shadcn.png"
-                      alt="@shadcn"
+                      alt="@user"
                     />
                   </Avatar>
-                  <div>
-                    <h4 className="text-sm font-medium text-black">John Doe</h4>
-                    <p className="text-xs text-black/55">
-                      lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  <div className="min-w-0">
+                    <h4 className="truncate text-sm font-semibold text-black">
+                      John Doe
+                    </h4>
+                    <p className="mt-0.5 truncate text-[11px] text-black/55">
+                      john.doe@example.com
                     </p>
                   </div>
                 </div>
+
                 <div className="my-3 h-px bg-black/5" />
-                <div className="flex flex-col gap-2 text-sm text-black/70">
+
+                <div className="space-y-1.5 text-sm text-black/80">
                   <button
                     type="button"
-                    className="flex w-fit items-center gap-2 rounded-xl px-1.5 py-1 transition hover:bg-black/5"
+                    className="flex w-full items-center justify-between rounded-xl px-2.5 py-2 text-left transition hover:bg-black/5"
+                    onClick={() => navigate("/profile")}
                   >
-                    <User2Icon className="h-4 w-4" />
-                    <span>View Profile</span>
+                    <span className="flex items-center gap-2">
+                      <User2Icon className="h-4 w-4" />
+                      <span>View profile</span>
+                    </span>
+                    
                   </button>
                   <button
                     type="button"
-                    className="flex w-fit items-center gap-2 rounded-xl px-1.5 py-1 text-red-600 transition hover:bg-red-50"
+                    className="flex w-full items-center justify-between rounded-xl px-2.5 py-2 text-left text-red-600 transition hover:bg-red-50"
                   >
-                    <LogOutIcon className="h-4 w-4" />
-                    <span>Logout</span>
+                    <span className="flex items-center gap-2">
+                      <LogOutIcon className="h-4 w-4" />
+                      <span>Logout</span>
+                    </span>
                   </button>
                 </div>
               </PopoverContent>

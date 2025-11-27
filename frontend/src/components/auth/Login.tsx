@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../store/authSlice";
 import type { RootState } from "../../store/store";
 import { Loader2 } from "lucide-react";
+import { setUser } from "../../store/authSlice";
 
 type Role = "student" | "recruiter";
 
@@ -49,6 +50,7 @@ const Login = () => {
         withCredentials: true,
       });
       if (res.data.success) {
+        dispatch(setUser(res.data.user));
         toast.success(res.data.message);
         navigate("/");
       }
@@ -128,7 +130,7 @@ const Login = () => {
                   <label
                     key={option.value}
                     htmlFor={option.id}
-                    className="flex min-w-[11rem] flex-1 items-center justify-between rounded-2xl border border-black/10 bg-[#fdfdfd] px-4 py-3 text-sm text-black/80 transition hover:border-black"
+                    className="flex flex-1 items-center justify-between rounded-2xl border border-black/10 bg-[#fdfdfd] px-4 py-3 text-sm text-black/80 transition hover:border-black"
                   >
                     <div className="space-y-0.5">
                       <p className="font-medium">{option.label}</p>
@@ -144,7 +146,7 @@ const Login = () => {
               </RadioGroup>
             </div>
             {loading ? (
-              <Button>
+              <Button className="flex w-full items-center justify-center gap-2 rounded-2xl border border-black bg-black text-white transition hover:bg-white hover:text-black">
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Please Wait...
               </Button>
