@@ -1,10 +1,15 @@
 import Navbar from "./shared/Navbar";
 import FilterSidebar from "./FilterSidebar";
 import JobCard from "./JobCard";
-
-const jobs = [1, 2, 3, 4, 5, 6, 7, 8];
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import type { Job } from "@/types/job";
+import type { Company } from "@/types/company";
 
 const Jobs = () => {
+  const { allJobs } = useSelector((state: RootState) => state.job) as {
+    allJobs: (Omit<Job, "company"> & { company: Company })[];
+  };
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -28,13 +33,13 @@ const Jobs = () => {
               </p>
             </div>
             <span className="text-xs text-muted-foreground">
-              {jobs.length} jobs found
+              {allJobs.length} jobs found
             </span>
           </header>
 
           <div className="grid gap-5 md:grid-cols-2">
-            {jobs.map((job) => (
-              <JobCard key={job} />
+            {allJobs.map((job) => (
+              <JobCard key={job._id} job={job} />
             ))}
           </div>
         </section>

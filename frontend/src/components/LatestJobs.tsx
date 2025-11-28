@@ -1,8 +1,13 @@
 import LatestJobCard from "./LatestJobCard";
-
-const randomJobs = [1, 2, 3, 4, 5, 6];
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import type { Job } from "@/types/job";
+import type { Company } from "@/types/company";
 
 const LatestJobs = () => {
+  const { allJobs } = useSelector((state: RootState) => state.job) as {
+    allJobs: (Omit<Job, "company"> & { company: Company })[];
+  };
   return (
     <section className="w-full bg-white">
       <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
@@ -22,9 +27,11 @@ const LatestJobs = () => {
         </header>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {randomJobs.map((item) => (
-            <LatestJobCard key={item} />
-          ))}
+          {allJobs.length > 0 ? (
+            allJobs?.slice(0, 6).map((item) => <LatestJobCard key={item._id} job={item} />)
+          ) : (
+            <span>No jobs are available right now</span>
+          )}
         </div>
       </div>
     </section>
