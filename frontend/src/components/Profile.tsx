@@ -5,10 +5,18 @@ import { PencilIcon, Mail, Phone, FileText } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Label } from "./ui/label";
 import AppliedJobTable from "./AppliedJobTable";
+import { useState } from "react";
+import UpdateProfile from "./UpdateProfile";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import type { User } from "@/types/user";
 
-const skills = [1, 2, 3, 4, 5];
 const Profile = () => {
-  const isResume = true;
+  const [open, setOpen] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const userData = user as User | null;
+  const skills = userData?.profile?.skills ?? [];
+  const isResumeAvailable = Boolean(userData?.profile?.resume);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -24,18 +32,17 @@ const Profile = () => {
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <h1 className="text-2xl font-semibold tracking-tight text-black">
-                    Full Name
+                    {userData?.fullname ?? "Full Name"}
                   </h1>
                   <p className="mt-2 text-sm leading-relaxed text-black/60">
-                    Bio Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Delectus dolore asperiores minus commodi saepe laudantium
-                    excepturi quidem eos, nulla, sequi necessitatibus quam ad
-                    expedita porro modi. Est dicta quibusdam esse!
+                    {userData?.profile?.bio ??
+                      "Tell recruiters more about yourself by updating your bio."}
                   </p>
                 </div>
                 <Button
                   variant="outline"
                   className="rounded-xl border-black/20 bg-white px-4 text-xs font-medium text-black hover:bg-black hover:text-white"
+                  onClick={() => setOpen(true)}
                 >
                   <PencilIcon className="mr-2 h-3.5 w-3.5" />
                   Edit
@@ -45,11 +52,11 @@ const Profile = () => {
               <div className="flex flex-wrap gap-4 text-sm text-black/70">
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-black/50" />
-                  <span>xifloxy@gmail.com</span>
+                  <span>{userData?.email ?? "Email not available"}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-black/50" />
-                  <span>1234567890</span>
+                  <span>{userData?.phoneNumber ?? "Phone not available"}</span>
                 </div>
               </div>
 
@@ -59,12 +66,12 @@ const Profile = () => {
                 </Label>
                 <div className="flex flex-wrap gap-2">
                   {skills.length > 0 ? (
-                    skills.map((item, index) => (
+                    skills.map((skill) => (
                       <Badge
-                        key={index}
+                        key={skill}
                         className="rounded-full border border-black/10 bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-black/70"
                       >
-                        Skill {item}
+                        {skill}
                       </Badge>
                     ))
                   ) : (
@@ -77,9 +84,9 @@ const Profile = () => {
                 <Label className="text-xs font-medium uppercase tracking-[0.2em] text-black/60">
                   Resume
                 </Label>
-                {isResume ? (
+                {isResumeAvailable && userData?.profile?.resume ? (
                   <a
-                    href="https://www.google.com"
+                    href={userData.profile.resume}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-black/5"
@@ -105,6 +112,7 @@ const Profile = () => {
           <AppliedJobTable />
         </section>
       </main>
+      <UpdateProfile open={open} setOpen={setOpen} />
     </div>
   );
 };

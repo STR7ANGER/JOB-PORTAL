@@ -114,7 +114,7 @@ export const logout = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { fullname, email, phoneNumber, bio, skills } = req.body;
+    const { fullname, email, phoneNumber, bio, skills } = req.body || {};
     let skillsArray = [];
     if(skills){
       skillsArray = skills.split(",");
@@ -126,7 +126,11 @@ export const updateProfile = async (req, res) => {
         .status(404)
         .json({ message: "User not found.", success: false });
     }
-    //update fields
+    // ensure nested profile object exists before updating nested fields
+    if (!user.profile) {
+      user.profile = {};
+    }
+    // update fields
     if(fullname){
       user.fullname = fullname;
     }

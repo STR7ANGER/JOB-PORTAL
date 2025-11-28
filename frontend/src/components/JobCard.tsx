@@ -1,8 +1,11 @@
 import { Button } from "./ui/button";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
+import { useNavigate } from "react-router-dom";
 
 const JobCard = () => {
+  const navigate = useNavigate();
+  const jobId = 1;
   return (
     <article className="group relative flex cursor-pointer flex-col justify-between rounded-2xl border border-black/10 bg-[#fdfdfd] p-5 text-left shadow-sm transition hover:border-black hover:bg-white hover:shadow-md">
       {/* Top row: time + bookmark */}
@@ -59,6 +62,7 @@ const JobCard = () => {
         <Button
           size="sm"
           className="bg-black text-xs font-medium text-white hover:bg-black/90"
+          onClick={() => navigate(`/description/${jobId}`)}
         >
           Details
         </Button>

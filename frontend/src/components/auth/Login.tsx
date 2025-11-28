@@ -14,21 +14,14 @@ import { setLoading } from "../../store/authSlice";
 import type { RootState } from "../../store/store";
 import { Loader2 } from "lucide-react";
 import { setUser } from "../../store/authSlice";
-
-type Role = "student" | "recruiter";
-
-type FormInput = {
-  email: string;
-  password: string;
-  role: Role;
-};
+import type { LoginFormInput, Role } from "@/types/auth";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((state: RootState) => state.auth);
 
-  const [input, setInput] = useState<FormInput>({
+  const [input, setInput] = useState<LoginFormInput>({
     email: "",
     password: "",
     role: "student",

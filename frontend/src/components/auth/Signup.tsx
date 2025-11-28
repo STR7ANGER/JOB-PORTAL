@@ -14,23 +14,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../store/authSlice";
 import type { RootState } from "../../store/store";
 import { Loader2 } from "lucide-react";
-
-type Role = "student" | "recruiter";
-
-type FormInput = {
-  fullname: string;
-  email: string;
-  phoneNumber: string;
-  password: string;
-  role: Role;
-  file: File | null;
-};
+import type { Role, SignupFormInput } from "@/types/auth";
 
 const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((state: RootState) => state.auth);
-  const [input, setInput] = useState<FormInput>({
+  const [input, setInput] = useState<SignupFormInput>({
     fullname: "",
     email: "",
     phoneNumber: "",
