@@ -14,12 +14,10 @@ import { setUser } from "@/store/authSlice";
 import axios from "axios";
 import { API_URL } from "@/utils/constant";
 import { toast } from "sonner";
-import type { User } from "@/types/user";
 const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  const User = user as User | null;
   const logoutHandler = async () => {
     dispatch(setUser(null));
     try {
@@ -97,7 +95,7 @@ const Navbar = () => {
               <PopoverTrigger asChild>
                 <Avatar className="h-9 w-9 cursor-pointer border border-black/10 transition hover:border-black/40">
                   <AvatarImage
-                    src={User?.profile?.profilePhoto}
+                    src={user?.profile?.profilePhoto}
                     alt="@user"
                   />
                 </Avatar>
@@ -106,16 +104,16 @@ const Navbar = () => {
                 <div className="flex items-center gap-3">
                   <Avatar className="h-9 w-9 border border-black/10">
                     <AvatarImage
-                      src={User?.profile?.profilePhoto}
-                      alt={User?.fullname}
+                      src={user?.profile?.profilePhoto}
+                      alt={user?.fullname}
                     />
                   </Avatar>
                   <div className="min-w-0">
                     <h4 className="truncate text-sm font-semibold text-black">
-                      {User?.fullname}
+                      {user?.fullname}
                     </h4>
                     <p className="mt-0.5 truncate text-[11px] text-black/55">
-                      {User?.email}
+                      {user?.email}
                     </p>
                   </div>
                 </div>

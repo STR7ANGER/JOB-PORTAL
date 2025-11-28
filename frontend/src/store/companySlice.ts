@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { Company } from "@/types/company";
 
 interface CompanyState {
-  company: any;
+  company: Company | null;
 }
 
 const companySlice = createSlice({
@@ -11,7 +12,7 @@ const companySlice = createSlice({
     company: null,
   } as CompanyState,
   reducers: {
-    setCompany: (state, action: PayloadAction<any>) => {
+    setCompany: (state, action: PayloadAction<Company | null>) => {
       state.company = action.payload;
     },
     clearCompany: (state) => {

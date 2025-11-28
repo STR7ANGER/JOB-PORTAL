@@ -2,10 +2,11 @@ import { Button } from "./ui/button";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
-import type { Job } from "@/types/job";
-import type { Company } from "@/types/company";
+import type { RootState } from "@/store/store";
 
-const JobCard = ({ job }: { job: Omit<Job, "company"> & { company: Company } }) => {
+type JobFromState = RootState["job"]["allJobs"][number];
+
+const JobCard = ({ job }: { job: JobFromState }) => {
   const navigate = useNavigate();
   const jobId = job._id;
 

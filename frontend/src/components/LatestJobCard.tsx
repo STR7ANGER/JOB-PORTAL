@@ -1,8 +1,9 @@
 import { Badge } from "./ui/badge";
-import type { Job } from "@/types/job";
-import type { Company } from "@/types/company";
+import type { RootState } from "@/store/store";
 
-const LatestJobCard = ({ job }: { job: Omit<Job, "company"> & { company: Company } }) => {
+type JobFromState = RootState["job"]["allJobs"][number];
+
+const LatestJobCard = ({ job }: { job: JobFromState }) => {
   return (
     <article className="group flex cursor-pointer flex-col justify-between rounded-2xl border border-black/10 bg-[#fdfdfd] p-4 text-left shadow-sm transition hover:border-black hover:bg-white hover:shadow-md">
       <header className="mb-3 flex items-start justify-between gap-2">

@@ -14,10 +14,7 @@ import useGetSingleJob from "@/hooks/useGetSingleJob";
 import useGetCompanyById from "@/hooks/useGetCompanyById";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import type { Job } from "@/types/job";
-import type { Company } from "@/types/company";
 import { Avatar, AvatarImage } from "./ui/avatar";
-import type { User } from "@/types/user";
 import { toast } from "sonner";
 import { API_URL } from "@/utils/constant";
 import axios from "axios";
@@ -28,9 +25,7 @@ const JobDescription = () => {
   const params = useParams();
   const jobId = params.id;
   useGetSingleJob(jobId as string);
-  const { singleJob } = useSelector((state: RootState) => state.job) as {
-    singleJob: Job | null;
-  };
+  const { singleJob } = useSelector((state: RootState) => state.job);
 
   // Get company ID - it could be a string or Company object
   const companyId =
@@ -39,13 +34,9 @@ const JobDescription = () => {
       : singleJob?.company?._id;
 
   useGetCompanyById(companyId);
-  const { company } = useSelector((state: RootState) => state.company) as {
-    company: Company | null;
-  };
+  const { company } = useSelector((state: RootState) => state.company);
 
-  const { user } = useSelector((state: RootState) => state.auth) as {
-    user: User | null;
-  };
+  const { user } = useSelector((state: RootState) => state.auth);
   const isApplied =
     singleJob?.applications?.some(
       (application: any) => 

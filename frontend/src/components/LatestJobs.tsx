@@ -1,13 +1,9 @@
 import LatestJobCard from "./LatestJobCard";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import type { Job } from "@/types/job";
-import type { Company } from "@/types/company";
 
 const LatestJobs = () => {
-  const { allJobs } = useSelector((state: RootState) => state.job) as {
-    allJobs: (Omit<Job, "company"> & { company: Company })[];
-  };
+  const { allJobs } = useSelector((state: RootState) => state.job);
   return (
     <section className="w-full bg-white">
       <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">

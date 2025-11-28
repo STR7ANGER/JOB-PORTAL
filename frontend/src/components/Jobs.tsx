@@ -3,13 +3,9 @@ import FilterSidebar from "./FilterSidebar";
 import JobCard from "./JobCard";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import type { Job } from "@/types/job";
-import type { Company } from "@/types/company";
 
 const Jobs = () => {
-  const { allJobs } = useSelector((state: RootState) => state.job) as {
-    allJobs: (Omit<Job, "company"> & { company: Company })[];
-  };
+  const { allJobs } = useSelector((state: RootState) => state.job);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

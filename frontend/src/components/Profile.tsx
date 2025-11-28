@@ -9,12 +9,11 @@ import { useState } from "react";
 import UpdateProfile from "./UpdateProfile";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import type { User } from "@/types/user";
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
-  const userData = user as User | null;
+  const userData = user ;
   const skills = userData?.profile?.skills ?? [];
   const isResumeAvailable = Boolean(userData?.profile?.resume);
   return (

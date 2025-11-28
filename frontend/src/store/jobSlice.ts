@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { Job } from "@/types/job";
 
 interface JobState {
-  allJobs: any[];
-  singleJob: any;
+  allJobs: Job[];
+  singleJob: Job | null;
 }
 
 const jobSlice = createSlice({
@@ -13,10 +14,10 @@ const jobSlice = createSlice({
     singleJob: null,
   } as JobState,
   reducers: {
-    setAllJobs: (state, action: PayloadAction<any[]>) => {
+    setAllJobs: (state, action: PayloadAction<Job[]>) => {
       state.allJobs = action.payload;
     },
-    setSingleJob: (state, action: PayloadAction<any>) => {
+    setSingleJob: (state, action: PayloadAction<Job | null>) => {
       state.singleJob = action.payload;
     },
   },
