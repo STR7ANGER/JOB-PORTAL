@@ -1,5 +1,6 @@
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
+import { User } from "../models/user.model.js";
 
 export const applyJob = async (req, res) => {
   try {
@@ -28,23 +29,51 @@ export const applyJob = async (req, res) => {
         .status(404)
         .json({ message: "Job not found.", success: false });
     }
+    // Get user's resume from profile
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found.", success: false });
+    }
+    // Check if user has a resume uploaded
+    if (!user.profile?.resume) {
+      return res.status(400).json({
+        message: "Please upload your resume in your profile before applying.",
+        success: false,
+      });
+    }
     //create a new application
     const newApplication = await Application.create({
       job: jobId,
       applicant: userId,
+      resumeUrl: user.profile.resume,
     });
     job.applications.push(newApplication._id);
     await job.save();
+    
+    // Fetch the updated job with populated applications
+    const updatedJob = await Job.findById(jobId)
+      .populate({ path: "company" })
+      .populate({
+        path: "applications",
+        populate: { path: "applicant", select: "_id fullname email" },
+      });
+    
     return res.status(201).json({
       message: "Application submitted successfully.",
       newApplication,
+      job: updatedJob,
       success: true,
     });
   } catch (error) {
     console.error("Error in applying job:", error);
     return res
       .status(500)
-      .json({ message: "Internal Server Error", success: false });
+      .json({ 
+        message: "Internal Server Error", 
+        success: false,
+      });
   }
 };
 

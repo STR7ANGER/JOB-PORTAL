@@ -1,34 +1,77 @@
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import Navbar from "./shared/Navbar";
-import { Calendar, Users, DollarSign, Briefcase, Clock, MapPin, Globe } from "lucide-react";
+import {
+  Calendar,
+  Users,
+  DollarSign,
+  Clock,
+  MapPin,
+  Globe,
+} from "lucide-react";
 import { useParams } from "react-router-dom";
 import useGetSingleJob from "@/hooks/useGetSingleJob";
 import useGetCompanyById from "@/hooks/useGetCompanyById";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
 import type { Job } from "@/types/job";
 import type { Company } from "@/types/company";
 import { Avatar, AvatarImage } from "./ui/avatar";
+import type { User } from "@/types/user";
+import { toast } from "sonner";
+import { API_URL } from "@/utils/constant";
+import axios from "axios";
+import { setSingleJob } from "@/store/jobSlice";
 
 const JobDescription = () => {
-  const isApplied = true;
+  const dispatch = useDispatch();
   const params = useParams();
   const jobId = params.id;
   useGetSingleJob(jobId as string);
   const { singleJob } = useSelector((state: RootState) => state.job) as {
     singleJob: Job | null;
   };
-  
+
   // Get company ID - it could be a string or Company object
-  const companyId = typeof singleJob?.company === "string" 
-    ? singleJob.company 
-    : singleJob?.company?._id;
-  
+  const companyId =
+    typeof singleJob?.company === "string"
+      ? singleJob.company
+      : singleJob?.company?._id;
+
   useGetCompanyById(companyId);
   const { company } = useSelector((state: RootState) => state.company) as {
     company: Company | null;
   };
+
+  const { user } = useSelector((state: RootState) => state.auth) as {
+    user: User | null;
+  };
+  const isApplied =
+    singleJob?.applications?.some(
+      (application: any) => 
+        (typeof application === "object" && application?.applicant?._id === user?._id) ||
+        (typeof application === "string" && application === user?._id)
+    ) || false;
+
+  const handleApplyJob = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/application/apply/${jobId}`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        // Update the job state with the updated job from the response
+        if (res.data.job) {
+          dispatch(setSingleJob(res.data.job));
+        }
+      }
+    } catch (error: any) {
+      console.error("Error in applying job:", error);
+      const errorMessage = error.response?.data?.message || "Something went wrong";
+      toast.error(errorMessage);
+    }
+  }
+  
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -42,7 +85,7 @@ const JobDescription = () => {
               </h1>
               <div className="flex flex-wrap gap-2">
                 <Badge className="rounded-full border border-black/10 bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-black/70">
-                  {singleJob?.position} 
+                  {singleJob?.position}
                 </Badge>
                 <Badge className="rounded-full border border-black/10 bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-black/70">
                   {singleJob?.jobType}
@@ -60,7 +103,7 @@ const JobDescription = () => {
                 Applied
               </Button>
             ) : (
-              <Button className="rounded-xl border border-black bg-black px-6 text-xs font-medium text-white transition hover:bg-white hover:text-black">
+              <Button onClick={handleApplyJob} className="rounded-xl border border-black bg-black px-6 text-xs font-medium text-white transition hover:bg-white hover:text-black">
                 Apply
               </Button>
             )}
@@ -74,8 +117,6 @@ const JobDescription = () => {
           </h2>
 
           <div className="space-y-6">
-            
-
             {/* Description */}
             <div className="space-y-2">
               <p className="text-sm leading-relaxed text-black/70">
@@ -91,7 +132,9 @@ const JobDescription = () => {
                   <p className="text-xs font-medium uppercase tracking-[0.2em] text-black/60">
                     Experience
                   </p>
-                  <p className="mt-1 text-sm font-medium text-black">{singleJob?.experience}</p>
+                  <p className="mt-1 text-sm font-medium text-black">
+                    {singleJob?.experience}
+                  </p>
                 </div>
               </div>
 
@@ -113,7 +156,9 @@ const JobDescription = () => {
                   <p className="text-xs font-medium uppercase tracking-[0.2em] text-black/60">
                     Total Applicants
                   </p>
-                  <p className="mt-1 text-sm font-medium text-black">{singleJob?.applications?.length || 0}</p>
+                  <p className="mt-1 text-sm font-medium text-black">
+                    {singleJob?.applications?.length || 0}
+                  </p>
                 </div>
               </div>
 
@@ -124,7 +169,9 @@ const JobDescription = () => {
                     Posted Date
                   </p>
                   <p className="mt-1 text-sm font-medium text-black">
-                    {singleJob?.createdAt ? new Date(singleJob.createdAt).toLocaleDateString() : "N/A"}
+                    {singleJob?.createdAt
+                      ? new Date(singleJob.createdAt).toLocaleDateString()
+                      : "N/A"}
                   </p>
                 </div>
               </div>
@@ -143,13 +190,15 @@ const JobDescription = () => {
               {/* Company Header */}
               <div className="flex items-start gap-4">
                 <Avatar className="h-16 w-16 border border-black/10">
-                  <AvatarImage 
-                    src={company.logo || "https://github.com/shadcn.png"} 
+                  <AvatarImage
+                    src={company.logo || "https://github.com/shadcn.png"}
                     alt={company.name}
                   />
                 </Avatar>
                 <div className="flex-1 space-y-2">
-                  <h3 className="text-xl font-semibold text-black">{company.name}</h3>
+                  <h3 className="text-xl font-semibold text-black">
+                    {company.name}
+                  </h3>
                   {company.description && (
                     <p className="text-sm leading-relaxed text-black/70">
                       {company.description}
