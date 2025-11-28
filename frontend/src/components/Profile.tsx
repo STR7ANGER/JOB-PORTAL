@@ -17,6 +17,13 @@ const Profile = () => {
   const userData = user as User | null;
   const skills = userData?.profile?.skills ?? [];
   const isResumeAvailable = Boolean(userData?.profile?.resume);
+
+  const handleViewResume = () => {
+    if (userData?.profile?.resume) {
+      const resumeUrl = userData.profile.resume;
+      window.open(resumeUrl, "_blank");
+    }
+  };
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -25,7 +32,10 @@ const Profile = () => {
         <section className="mb-8 rounded-2xl border border-black/10 bg-[#fdfdfd] p-6 shadow-sm md:p-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
             <Avatar className="h-24 w-24 border-2 border-black/10 md:h-28 md:w-28">
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage 
+                src={userData?.profile?.profilePhoto || "https://github.com/shadcn.png"} 
+                alt={userData?.fullname || "Profile"}
+              />
             </Avatar>
 
             <div className="flex-1 space-y-4">
@@ -85,15 +95,13 @@ const Profile = () => {
                   Resume
                 </Label>
                 {isResumeAvailable && userData?.profile?.resume ? (
-                  <a
-                    href={userData.profile.resume}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={handleViewResume}
                     className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-black/5"
                   >
                     <FileText className="h-4 w-4" />
                     View Resume
-                  </a>
+                  </button>
                 ) : (
                   <p className="text-sm text-black/50">NA</p>
                 )}

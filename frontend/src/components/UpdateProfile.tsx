@@ -268,6 +268,11 @@ const UpdateProfile = ({ open, setOpen }: UpdateProfileDialogProps) => {
                 className="hidden"
                 onChange={profilePhotoChangeHandler}
               />
+              {input.profilePhoto && (
+                <p className="text-xs text-black/60">
+                  Selected: {input.profilePhoto.name}
+                </p>
+              )}
             </div>
 
             <div className="space-y-1.5">
@@ -296,6 +301,11 @@ const UpdateProfile = ({ open, setOpen }: UpdateProfileDialogProps) => {
                 className="hidden"
                 onChange={resumeChangeHandler}
               />
+              {input.resume && (
+                <p className="text-xs text-black/60">
+                  Selected: {input.resume.name}
+                </p>
+              )}
             </div>
           </div>
         </form>

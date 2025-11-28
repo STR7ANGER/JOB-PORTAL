@@ -1,6 +1,8 @@
 import { User } from "../models/user.model.js";
 import bycript from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { dataUri } from "../utils/uri.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const register = async (req, res) => {
   try {
@@ -19,6 +21,15 @@ export const register = async (req, res) => {
         .status(400)
         .json({ message: "Email is already registered.", success: false });
     }
+    
+    // Handle profile picture upload if provided
+    let profilePhotoUrl = "";
+    if (req.file) {
+      const fileUri = dataUri(req.file);
+      const cloudinaryResponse = await cloudinary.uploader.upload(fileUri.content);
+      profilePhotoUrl = cloudinaryResponse.secure_url;
+    }
+    
     const hashedPassword = await bycript.hash(password, 10);
     await User.create({
       fullname,
@@ -26,6 +37,9 @@ export const register = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
+      profile: {
+        profilePhoto: profilePhotoUrl,
+      },
     });
     return res
       .status(201)
@@ -115,6 +129,9 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body || {};
+    const profilePhotoFile = req.files?.profilePhoto?.[0];
+    const resumeFile = req.files?.resume?.[0];
+    
     let skillsArray = [];
     if(skills){
       skillsArray = skills.split(",");
@@ -130,6 +147,39 @@ export const updateProfile = async (req, res) => {
     if (!user.profile) {
       user.profile = {};
     }
+    
+    // Handle profile photo upload
+    if (profilePhotoFile) {
+      const fileUri = dataUri(profilePhotoFile);
+      const cloudinaryResponse = await cloudinary.uploader.upload(fileUri.content, {
+        folder: "job-portal/profile-photos",
+      });
+      user.profile.profilePhoto = cloudinaryResponse.secure_url;
+    }
+    
+    // Handle resume upload
+    if (resumeFile) {
+      const fileUri = dataUri(resumeFile);
+      const fileExtension = resumeFile.originalname.split('.').pop();
+      const baseName = resumeFile.originalname
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[^a-zA-Z0-9._-]/g, "_")
+        .toLowerCase();
+      
+      const publicId = `job-portal/resumes/${baseName}.${fileExtension}`;
+      
+      const cloudinaryResponse = await cloudinary.uploader.upload(fileUri.content, {
+        resource_type: "raw",
+        public_id: publicId,
+        use_filename: false, 
+        unique_filename: true, 
+        overwrite: false,
+      });
+      
+      user.profile.resume = cloudinaryResponse.secure_url;
+      user.profile.resumeOriginalName = resumeFile.originalname;
+    }
+    
     // update fields
     if(fullname){
       user.fullname = fullname;
