@@ -17,13 +17,6 @@ const Profile = () => {
   const userData = user as User | null;
   const skills = userData?.profile?.skills ?? [];
   const isResumeAvailable = Boolean(userData?.profile?.resume);
-
-  const handleViewResume = () => {
-    if (userData?.profile?.resume) {
-      const resumeUrl = userData.profile.resume;
-      window.open(resumeUrl, "_blank");
-    }
-  };
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -95,13 +88,15 @@ const Profile = () => {
                   Resume
                 </Label>
                 {isResumeAvailable && userData?.profile?.resume ? (
-                  <button
-                    onClick={handleViewResume}
-                    className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-black/5"
+                  <a
+                    href={userData.profile.resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-black/5 hover:underline"
                   >
                     <FileText className="h-4 w-4" />
-                    View Resume
-                  </button>
+                    {userData.profile.resumeOriginalName || "View Resume"}
+                  </a>
                 ) : (
                   <p className="text-sm text-black/50">NA</p>
                 )}

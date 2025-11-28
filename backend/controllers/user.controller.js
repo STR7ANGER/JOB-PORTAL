@@ -136,6 +136,7 @@ export const updateProfile = async (req, res) => {
     if(skills){
       skillsArray = skills.split(",");
     }
+    
     const userId = req.id;
     let user = await User.findById(userId);
     if (!user) {
@@ -143,6 +144,7 @@ export const updateProfile = async (req, res) => {
         .status(404)
         .json({ message: "User not found.", success: false });
     }
+    
     // ensure nested profile object exists before updating nested fields
     if (!user.profile) {
       user.profile = {};
@@ -157,45 +159,23 @@ export const updateProfile = async (req, res) => {
       user.profile.profilePhoto = cloudinaryResponse.secure_url;
     }
     
-    // Handle resume upload
+    // Handle resume upload - cloudinary upload
     if (resumeFile) {
       const fileUri = dataUri(resumeFile);
-      const fileExtension = resumeFile.originalname.split('.').pop();
-      const baseName = resumeFile.originalname
-        .replace(/\.[^/.]+$/, "")
-        .replace(/[^a-zA-Z0-9._-]/g, "_")
-        .toLowerCase();
-      
-      const publicId = `job-portal/resumes/${baseName}.${fileExtension}`;
-      
       const cloudinaryResponse = await cloudinary.uploader.upload(fileUri.content, {
-        resource_type: "raw",
-        public_id: publicId,
-        use_filename: false, 
-        unique_filename: true, 
-        overwrite: false,
+        folder: "job-portal/resumes",
       });
-      
-      user.profile.resume = cloudinaryResponse.secure_url;
+      user.profile.resume = cloudinaryResponse.secure_url; 
       user.profile.resumeOriginalName = resumeFile.originalname;
     }
     
-    // update fields
-    if(fullname){
-      user.fullname = fullname;
-    }
-    if(email){
-      user.email = email;
-    }
-    if(phoneNumber){
-      user.phoneNumber = phoneNumber;
-    }
-    if(bio){
-      user.profile.bio = bio;
-    }
-    if(skills){
-      user.profile.skills = skillsArray;
-    }
+    // Update fields
+    if(fullname) user.fullname = fullname;
+    if(email) user.email = email;
+    if(phoneNumber) user.phoneNumber = phoneNumber;
+    if(bio) user.profile.bio = bio;
+    if(skills) user.profile.skills = skillsArray;
+    
     await user.save();
 
     user = {
