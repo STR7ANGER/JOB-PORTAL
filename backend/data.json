@@ -1,0 +1,296 @@
+{
+  "recruiters": [
+    {
+      "fullname": "Recruiter One",
+      "email": "recruiter1@test.com",
+      "phoneNumber": 1111111111,
+      "password": "password",
+      "role": "recruiter"
+    },
+    {
+      "fullname": "Recruiter Two",
+      "email": "recruiter2@test.com",
+      "phoneNumber": 2222222222,
+      "password": "password",
+      "role": "recruiter"
+    },
+    {
+      "fullname": "Recruiter Three",
+      "email": "recruiter3@test.com",
+      "phoneNumber": 3333333333,
+      "password": "password",
+      "role": "recruiter"
+    }
+  ],
+  "companies": [
+    {
+      "name": "TechCorp Solutions",
+      "description": "Leading technology solutions provider specializing in enterprise software development and cloud services.",
+      "website": "https://www.techcorp.com",
+      "location": "San Francisco, CA",
+      "recruiterIndex": 0
+    },
+    {
+      "name": "DataViz Analytics",
+      "description": "Advanced data analytics and visualization company helping businesses make data-driven decisions.",
+      "website": "https://www.dataviz.com",
+      "location": "New York, NY",
+      "recruiterIndex": 0
+    },
+    {
+      "name": "CloudScale Systems",
+      "description": "Cloud infrastructure and DevOps solutions for modern enterprises.",
+      "website": "https://www.cloudscale.com",
+      "location": "Seattle, WA",
+      "recruiterIndex": 1
+    },
+    {
+      "name": "AI Innovations Lab",
+      "description": "Cutting-edge artificial intelligence and machine learning research and development.",
+      "website": "https://www.aiinnovations.com",
+      "location": "Boston, MA",
+      "recruiterIndex": 1
+    },
+    {
+      "name": "SecureNet Technologies",
+      "description": "Cybersecurity solutions and consulting services for businesses of all sizes.",
+      "website": "https://www.securenet.com",
+      "location": "Austin, TX",
+      "recruiterIndex": 2
+    }
+  ],
+  "jobs": [
+    {
+      "title": "Senior Full Stack Developer",
+      "description": "We are looking for an experienced Full Stack Developer to join our dynamic team. You will be responsible for developing and maintaining web applications using modern technologies.",
+      "requirements": "React, Node.js, MongoDB, Express.js, RESTful APIs, Git",
+      "salary": 120000,
+      "location": "San Francisco, CA",
+      "jobType": "Full-time",
+      "experience": 5,
+      "position": 2,
+      "companyIndex": 0
+    },
+    {
+      "title": "Frontend Developer",
+      "description": "Join our frontend team to build beautiful and responsive user interfaces. Work with React, TypeScript, and modern CSS frameworks.",
+      "requirements": "React, TypeScript, CSS, HTML, JavaScript, Redux",
+      "salary": 95000,
+      "location": "San Francisco, CA",
+      "jobType": "Full-time",
+      "experience": 3,
+      "position": 3,
+      "companyIndex": 0
+    },
+    {
+      "title": "Backend Engineer",
+      "description": "Design and implement scalable backend systems. Work with microservices architecture and cloud technologies.",
+      "requirements": "Node.js, Python, PostgreSQL, Docker, AWS, Microservices",
+      "salary": 110000,
+      "location": "San Francisco, CA",
+      "jobType": "Full-time",
+      "experience": 4,
+      "position": 2,
+      "companyIndex": 0
+    },
+    {
+      "title": "DevOps Engineer",
+      "description": "Manage and optimize our cloud infrastructure. Implement CI/CD pipelines and ensure system reliability.",
+      "requirements": "AWS, Docker, Kubernetes, Jenkins, Terraform, Linux",
+      "salary": 115000,
+      "location": "San Francisco, CA",
+      "jobType": "Full-time",
+      "experience": 4,
+      "position": 1,
+      "companyIndex": 0
+    },
+    {
+      "title": "Data Scientist",
+      "description": "Analyze complex datasets and build predictive models. Work with machine learning algorithms and statistical methods.",
+      "requirements": "Python, R, SQL, Machine Learning, Statistics, Data Visualization",
+      "salary": 130000,
+      "location": "New York, NY",
+      "jobType": "Full-time",
+      "experience": 5,
+      "position": 2,
+      "companyIndex": 1
+    },
+    {
+      "title": "Data Analyst",
+      "description": "Transform raw data into actionable insights. Create reports and dashboards for business stakeholders.",
+      "requirements": "SQL, Excel, Tableau, Python, Data Analysis, Statistics",
+      "salary": 75000,
+      "location": "New York, NY",
+      "jobType": "Full-time",
+      "experience": 2,
+      "position": 4,
+      "companyIndex": 1
+    },
+    {
+      "title": "Business Intelligence Developer",
+      "description": "Develop and maintain BI solutions. Create data warehouses and ETL processes.",
+      "requirements": "SQL, Power BI, Tableau, ETL, Data Warehousing, Business Intelligence",
+      "salary": 100000,
+      "location": "New York, NY",
+      "jobType": "Full-time",
+      "experience": 4,
+      "position": 2,
+      "companyIndex": 1
+    },
+    {
+      "title": "Data Engineer",
+      "description": "Build and maintain data pipelines. Ensure data quality and accessibility for analytics teams.",
+      "requirements": "Python, SQL, Apache Spark, Airflow, Data Pipelines, Big Data",
+      "salary": 125000,
+      "location": "New York, NY",
+      "jobType": "Full-time",
+      "experience": 5,
+      "position": 1,
+      "companyIndex": 1
+    },
+    {
+      "title": "Cloud Architect",
+      "description": "Design and implement cloud infrastructure solutions. Lead migration projects and optimize cloud costs.",
+      "requirements": "AWS, Azure, GCP, Cloud Architecture, Terraform, Kubernetes",
+      "salary": 140000,
+      "location": "Seattle, WA",
+      "jobType": "Full-time",
+      "experience": 7,
+      "position": 1,
+      "companyIndex": 2
+    },
+    {
+      "title": "Site Reliability Engineer",
+      "description": "Ensure system reliability and performance. Monitor systems and respond to incidents.",
+      "requirements": "Linux, Monitoring Tools, Incident Response, Automation, Scripting",
+      "salary": 120000,
+      "location": "Seattle, WA",
+      "jobType": "Full-time",
+      "experience": 5,
+      "position": 2,
+      "companyIndex": 2
+    },
+    {
+      "title": "Infrastructure Engineer",
+      "description": "Manage and scale infrastructure systems. Work with containerization and orchestration tools.",
+      "requirements": "Docker, Kubernetes, Linux, Networking, Infrastructure as Code",
+      "salary": 110000,
+      "location": "Seattle, WA",
+      "jobType": "Full-time",
+      "experience": 4,
+      "position": 3,
+      "companyIndex": 2
+    },
+    {
+      "title": "Cloud Security Engineer",
+      "description": "Implement security best practices for cloud infrastructure. Conduct security audits and assessments.",
+      "requirements": "Cloud Security, AWS Security, Compliance, Security Auditing, IAM",
+      "salary": 125000,
+      "location": "Seattle, WA",
+      "jobType": "Full-time",
+      "experience": 5,
+      "position": 2,
+      "companyIndex": 2
+    },
+    {
+      "title": "Machine Learning Engineer",
+      "description": "Develop and deploy machine learning models. Work with deep learning frameworks and MLOps.",
+      "requirements": "Python, TensorFlow, PyTorch, MLflow, MLOps, Deep Learning",
+      "salary": 145000,
+      "location": "Boston, MA",
+      "jobType": "Full-time",
+      "experience": 5,
+      "position": 1,
+      "companyIndex": 3
+    },
+    {
+      "title": "AI Research Scientist",
+      "description": "Conduct cutting-edge research in artificial intelligence. Publish papers and develop novel algorithms.",
+      "requirements": "PhD in AI/ML, Research Experience, Publications, Deep Learning, NLP, Computer Vision",
+      "salary": 160000,
+      "location": "Boston, MA",
+      "jobType": "Full-time",
+      "experience": 3,
+      "position": 1,
+      "companyIndex": 3
+    },
+    {
+      "title": "NLP Engineer",
+      "description": "Build natural language processing systems. Work with transformers and language models.",
+      "requirements": "Python, NLP, Transformers, BERT, GPT, Text Processing",
+      "salary": 135000,
+      "location": "Boston, MA",
+      "jobType": "Full-time",
+      "experience": 4,
+      "position": 2,
+      "companyIndex": 3
+    },
+    {
+      "title": "Computer Vision Engineer",
+      "description": "Develop computer vision applications. Work with image processing and object detection.",
+      "requirements": "Python, OpenCV, Computer Vision, Deep Learning, Image Processing",
+      "salary": 130000,
+      "location": "Boston, MA",
+      "jobType": "Full-time",
+      "experience": 4,
+      "position": 2,
+      "companyIndex": 3
+    },
+    {
+      "title": "Cybersecurity Analyst",
+      "description": "Monitor and analyze security threats. Respond to security incidents and implement security measures.",
+      "requirements": "Cybersecurity, SIEM, Incident Response, Network Security, Threat Analysis",
+      "salary": 90000,
+      "location": "Austin, TX",
+      "jobType": "Full-time",
+      "experience": 3,
+      "position": 3,
+      "companyIndex": 4
+    },
+    {
+      "title": "Penetration Tester",
+      "description": "Conduct security assessments and penetration testing. Identify vulnerabilities and recommend fixes.",
+      "requirements": "Penetration Testing, Ethical Hacking, Security Tools, Vulnerability Assessment, OWASP",
+      "salary": 110000,
+      "location": "Austin, TX",
+      "jobType": "Full-time",
+      "experience": 4,
+      "position": 2,
+      "companyIndex": 4
+    },
+    {
+      "title": "Security Architect",
+      "description": "Design secure systems and security frameworks. Lead security initiatives and compliance projects.",
+      "requirements": "Security Architecture, Risk Assessment, Compliance, Security Design, CISSP",
+      "salary": 150000,
+      "location": "Austin, TX",
+      "jobType": "Full-time",
+      "experience": 8,
+      "position": 1,
+      "companyIndex": 4
+    },
+    {
+      "title": "Security Engineer",
+      "description": "Implement and maintain security infrastructure. Configure security tools and monitor systems.",
+      "requirements": "Security Engineering, Firewalls, IDS/IPS, Security Tools, Network Security",
+      "salary": 105000,
+      "location": "Austin, TX",
+      "jobType": "Full-time",
+      "experience": 4,
+      "position": 2,
+      "companyIndex": 4
+    },
+    {
+      "title": "Junior Software Developer",
+      "description": "Entry-level position for recent graduates. Learn and grow with our experienced development team.",
+      "requirements": "JavaScript, HTML, CSS, Basic Programming, Willingness to Learn",
+      "salary": 65000,
+      "location": "San Francisco, CA",
+      "jobType": "Full-time",
+      "experience": 0,
+      "position": 5,
+      "companyIndex": 0
+    }
+  ]
+}
+

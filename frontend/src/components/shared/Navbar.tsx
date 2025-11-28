@@ -97,7 +97,7 @@ const Navbar = () => {
               <PopoverTrigger asChild>
                 <Avatar className="h-9 w-9 cursor-pointer border border-black/10 transition hover:border-black/40">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={User?.profile?.profilePhoto}
                     alt="@user"
                   />
                 </Avatar>
@@ -106,8 +106,8 @@ const Navbar = () => {
                 <div className="flex items-center gap-3">
                   <Avatar className="h-9 w-9 border border-black/10">
                     <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@user"
+                      src={User?.profile?.profilePhoto}
+                      alt={User?.fullname}
                     />
                   </Avatar>
                   <div className="min-w-0">
